@@ -109,7 +109,7 @@ The current implementation is intended as a prototype for future public-health a
 
 # Project Structure
 
-
+```text
 OneHealth/
 ├── accounts/
 ├── ai/
@@ -124,9 +124,8 @@ OneHealth/
 ├── manage.py
 ├── requirements.txt
 └── README.md
-
+```
 ---
-
 
 
 ## AI Features
