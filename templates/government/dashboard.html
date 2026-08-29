@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}
+Government Health Dashboard | OneHealth
+{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <p class="eyebrow">
+                ONEHEALTH · GOVERNMENT HEALTH INTELLIGENCE
+            </p>
+
+            <h1>
+                Health Administration Dashboard
+            </h1>
+
+            <p>
+                Population-level healthcare statistics
+                and service activity.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'ai:government_summary' %}"
+            class="btn-primary"
+        >
+            AI Health Summary
+        </a>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <span>Citizens</span>
+            <strong>{{ citizen_count }}</strong>
+        </div>
+
+        <div class="stat-card">
+            <span>Doctors</span>
+            <strong>{{ doctor_count }}</strong>
+        </div>
+
+        <div class="stat-card">
+            <span>Hospitals</span>
+            <strong>{{ hospital_count }}</strong>
+        </div>
+
+        <div class="stat-card">
+            <span>Appointments</span>
+            <strong>{{ appointment_count }}</strong>
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-grid">
+
+        <section class="dashboard-card">
+
+            <h2>
+                Disease Statistics
+            </h2>
+
+            {% for item in disease_data %}
+
+                <div class="analytics-row">
+
+                    <span>
+                        {{ item.diagnosis }}
+                    </span>
+
+                    <strong>
+                        {{ item.total }}
+                    </strong>
+
+                </div>
+
+            {% empty %}
+
+                <p>
+                    No medical data available.
+                </p>
+
+            {% endfor %}
+
+        </section>
+
+
+        <section class="dashboard-card">
+
+            <h2>
+                Area Activity
+            </h2>
+
+            {% for item in area_data %}
+
+                <div class="analytics-row">
+
+                    <span>
+                        {{ item.address|truncatechars:35 }}
+                    </span>
+
+                    <strong>
+                        {{ item.total }}
+                    </strong>
+
+                </div>
+
+            {% empty %}
+
+                <p>
+                    No area data available.
+                </p>
+
+            {% endfor %}
+
+        </section>
+
+    </div>
+
+
+    <div class="ai-card">
+
+        <div>
+
+            <p class="eyebrow">
+                AI HEALTH INTELLIGENCE
+            </p>
+
+            <h2>
+                Detect unusual health patterns
+            </h2>
+
+            <p>
+                Analyze aggregated records and generate
+                an administrative summary.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'ai:government_summary' %}"
+            class="btn-primary"
+        >
+            Analyze Data
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

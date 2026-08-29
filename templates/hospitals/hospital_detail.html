@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ hospital.name }} | OneHealth
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- HOSPITAL HEADER -->
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <p class="dashboard-label">
+                HOSPITAL
+            </p>
+
+            <h1>
+                {{ hospital.name }}
+            </h1>
+
+            <p class="doctor-specialization">
+                {{ hospital.city }},
+                {{ hospital.state }}
+            </p>
+
+        </div>
+
+
+        {% if hospital.emergency_available %}
+
+            <div class="doctor-id-card">
+
+                <span>
+                    Emergency
+                </span>
+
+                <strong>
+                    Available
+                </strong>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- HOSPITAL INFORMATION -->
+
+    <div class="dashboard-section">
+
+        <h2>
+            Hospital Information
+        </h2>
+
+        <br>
+
+        <p>
+            <strong>
+                Type:
+            </strong>
+
+            {{ hospital.hospital_type }}
+        </p>
+
+        <p style="margin-top:8px;">
+
+            <strong>
+                Address:
+            </strong>
+
+            {{ hospital.address }}
+
+        </p>
+
+        {% if hospital.phone %}
+
+            <p style="margin-top:8px;">
+
+                <strong>
+                    Phone:
+                </strong>
+
+                {{ hospital.phone }}
+
+            </p>
+
+        {% endif %}
+
+        {% if hospital.description %}
+
+            <p style="margin-top:15px; color:#667085;">
+
+                {{ hospital.description }}
+
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- DOCTOR FILTER -->
+
+    <div class="dashboard-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <p class="section-label">
+                    MEDICAL STAFF
+                </p>
+
+                <h2>
+                    Available Doctors
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <form method="GET">
+
+            <label>
+                Filter by Specialization
+            </label>
+
+            <select
+                name="specialization"
+                onchange="this.form.submit()"
+            >
+
+                <option value="">
+                    All Specializations
+                </option>
+
+                {% for item in specializations %}
+
+                    <option
+                        value="{{ item }}"
+                        {% if selected_specialization == item %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ item }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </form>
+
+    </div>
+
+
+    <!-- DOCTORS -->
+
+    <div class="dashboard-section">
+
+        {% if doctors %}
+
+            <div class="hospital-grid">
+
+                {% for doctor in doctors %}
+
+                    <div class="hospital-card">
+
+                        <div class="hospital-icon">
+                            🩺
+                        </div>
+
+                        <div style="flex:1;">
+
+                            <h3>
+                                Dr.
+                                {{ doctor.user.get_full_name }}
+                            </h3>
+
+                            <p>
+                                {{ doctor.specialization }}
+                            </p>
+
+                            {% if doctor.qualification %}
+
+                                <p>
+                                    {{ doctor.qualification }}
+                                </p>
+
+                            {% endif %}
+
+                            <p>
+                                {{ doctor.experience }}
+                                years experience
+                            </p>
+
+
+                            <br>
+
+
+                            <a
+                                href="{% url 'appointments:book' hospital.id doctor.id %}"
+                                class="primary-btn"
+                            >
+                                Book Appointment
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <h3>
+                    No doctors found
+                </h3>
+
+                <p>
+                    No doctors match the selected specialization.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

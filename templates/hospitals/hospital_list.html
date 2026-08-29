@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+
+{% block title %}
+Find Hospitals | OneHealth
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-container">
+
+    <div class="page-header">
+
+        <div>
+
+            <p class="eyebrow">
+                ONEHEALTH CARE NETWORK
+            </p>
+
+            <h1>
+                Find a Hospital
+            </h1>
+
+            <p>
+                Search hospitals and find doctors
+                available for consultation.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="search-card">
+
+        <form method="GET">
+
+            <div class="search-grid">
+
+                <div>
+
+                    <label>
+                        Hospital, City or PIN Code
+                    </label>
+
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ search }}"
+                        placeholder="Search hospital..."
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Hospital Type
+                    </label>
+
+                    <select name="type">
+
+                        <option value="">
+                            All Types
+                        </option>
+
+                        <option
+                            value="Government"
+                            {% if hospital_type == "Government" %}
+                                selected
+                            {% endif %}
+                        >
+                            Government
+                        </option>
+
+                        <option
+                            value="Private"
+                            {% if hospital_type == "Private" %}
+                                selected
+                            {% endif %}
+                        >
+                            Private
+                        </option>
+
+                        <option
+                            value="Semi-Government"
+                            {% if hospital_type == "Semi-Government" %}
+                                selected
+                            {% endif %}
+                        >
+                            Semi-Government
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        City
+                    </label>
+
+                    <input
+                        type="text"
+                        name="city"
+                        value="{{ city }}"
+                        placeholder="Enter city"
+                    >
+
+                </div>
+
+
+                <div class="search-button">
+
+                    <button
+                        type="submit"
+                        class="btn-primary"
+                    >
+                        Search
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <div class="results-header">
+
+        <h2>
+            Available Hospitals
+        </h2>
+
+        <span>
+            {{ hospitals|length }} found
+        </span>
+
+    </div>
+
+
+    {% if hospitals %}
+
+        <div class="hospital-grid">
+
+            {% for hospital in hospitals %}
+
+                <div class="hospital-card">
+
+                    <div class="hospital-icon">
+                        🏥
+                    </div>
+
+
+                    <div class="hospital-content">
+
+                        <div class="hospital-title-row">
+
+                            <h3>
+                                {{ hospital.name }}
+                            </h3>
+
+                            {% if hospital.emergency_available %}
+
+                                <span class="emergency-badge">
+                                    Emergency
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <p class="hospital-type">
+                            {{ hospital.hospital_type }}
+                        </p>
+
+
+                        <p>
+                            📍
+                            {{ hospital.city }},
+                            {{ hospital.state }}
+                            - {{ hospital.pincode }}
+                        </p>
+
+
+                        {% if hospital.phone %}
+
+                            <p>
+                                ☎ {{ hospital.phone }}
+                            </p>
+
+                        {% endif %}
+
+
+                        <a
+                            href="{% url 'hospitals:hospital_detail' hospital.id %}"
+                            class="btn-secondary hospital-btn"
+                        >
+                            View Hospital
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <div>
+                🔎
+            </div>
+
+            <h3>
+                No hospitals found
+            </h3>
+
+            <p>
+                Try another hospital name,
+                city or PIN code.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

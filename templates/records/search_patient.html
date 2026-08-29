@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}
+Search Patient | OneHealth
+{% endblock %}
+
+
+{% block content %}
+
+<div class="records-page">
+
+    <div class="records-page-header">
+
+        <div>
+
+            <p class="eyebrow">
+                ONEHEALTH CLINICAL RECORDS
+            </p>
+
+            <h1>
+                Search Patient
+            </h1>
+
+            <p>
+                Search a citizen using their OneHealth ID
+                to view their previous health records.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- SEARCH CARD -->
+
+    <div class="search-card patient-search-card">
+
+        <form
+            method="POST"
+            action="{% url 'records:search_patient_records' %}"
+        >
+
+            {% csrf_token %}
+
+            <div class="form-group">
+
+                <label for="onehealth_id">
+                    OneHealth ID
+                </label>
+
+                <input
+                    type="text"
+                    id="onehealth_id"
+                    name="onehealth_id"
+                    placeholder="Example: OH-A1B2C3D4"
+                    required
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            {% if error %}
+
+                <div class="error-box">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+
+            <button
+                type="submit"
+                class="btn-primary"
+            >
+                Search Patient
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- INFORMATION -->
+
+    <div class="dashboard-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <p class="section-label">
+                    INFORMATION
+                </p>
+
+                <h2>
+                    How it works
+                </h2>
+
+            </div>
+
+        </div>
+
+        <p>
+            Enter the citizen's unique OneHealth ID.
+            If the ID exists, you will be taken to the
+            citizen's complete previous medical history.
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

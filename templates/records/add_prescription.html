@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Prescription | OneHealth
+{% endblock %}
+
+{% block content %}
+
+<div class="records-page">
+
+    <!-- HEADER -->
+
+    <div class="records-page-header">
+
+        <div>
+
+            <p class="eyebrow">
+                ONEHEALTH CLINICAL RECORDS
+            </p>
+
+            <h1>
+                Add Prescription
+            </h1>
+
+            <p>
+                Add medication details to the medical record.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'records:doctor_patient_records' record.patient.id %}"
+            class="btn-secondary"
+        >
+            ← Back to Records
+        </a>
+
+    </div>
+
+
+    <!-- MEDICAL RECORD REFERENCE -->
+
+    <div class="record-reference-card">
+
+        <div class="record-reference-icon">
+            🩺
+        </div>
+
+        <div>
+
+            <span>
+                Medical Record
+            </span>
+
+            <strong>
+                {{ record.diagnosis }}
+            </strong>
+
+            <small>
+                {{ record.record_date|date:"d M Y" }}
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <!-- FORM -->
+
+    <div class="record-form-card">
+
+        <div class="form-card-header">
+
+            <div class="record-icon">
+                💊
+            </div>
+
+            <div>
+
+                <h2>
+                    Medication Details
+                </h2>
+
+                <p>
+                    Enter the prescribed medicine and instructions.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            {% if form.non_field_errors %}
+
+                <div class="form-error-box">
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+
+            <div class="record-form-grid">
+
+
+                <!-- MEDICINE -->
+
+                <div class="record-form-group">
+
+                    <label for="{{ form.medicine_name.id_for_label }}">
+                        Medicine Name
+                    </label>
+
+                    {{ form.medicine_name }}
+
+                    {% if form.medicine_name.errors %}
+
+                        <div class="field-error">
+                            {{ form.medicine_name.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- DOSAGE -->
+
+                <div class="record-form-group">
+
+                    <label for="{{ form.dosage.id_for_label }}">
+                        Dosage
+                    </label>
+
+                    {{ form.dosage }}
+
+                    {% if form.dosage.errors %}
+
+                        <div class="field-error">
+                            {{ form.dosage.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- FREQUENCY -->
+
+                <div class="record-form-group">
+
+                    <label for="{{ form.frequency.id_for_label }}">
+                        Frequency
+                    </label>
+
+                    {{ form.frequency }}
+
+                    {% if form.frequency.errors %}
+
+                        <div class="field-error">
+                            {{ form.frequency.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- DURATION -->
+
+                <div class="record-form-group">
+
+                    <label for="{{ form.duration.id_for_label }}">
+                        Duration
+                    </label>
+
+                    {{ form.duration }}
+
+                    {% if form.duration.errors %}
+
+                        <div class="field-error">
+                            {{ form.duration.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- INSTRUCTIONS -->
+
+                <div class="record-form-group full-width">
+
+                    <label for="{{ form.instructions.id_for_label }}">
+                        Instructions
+                    </label>
+
+                    {{ form.instructions }}
+
+                    {% if form.instructions.errors %}
+
+                        <div class="field-error">
+                            {{ form.instructions.errors }}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="form-actions">
+
+                <a
+                    href="{% url 'records:doctor_patient_records' record.patient.id %}"
+                    class="btn-secondary"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                >
+                    Save Prescription
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

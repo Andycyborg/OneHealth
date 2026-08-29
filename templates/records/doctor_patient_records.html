@@ -1,0 +1,372 @@
+{% extends "base.html" %}
+
+{% block title %}
+Patient Medical Records | OneHealth
+{% endblock %}
+
+
+{% block content %}
+
+<div class="records-page">
+
+    <!-- PAGE HEADER -->
+
+    <div class="records-page-header">
+
+        <div>
+
+            <p class="eyebrow">
+                ONEHEALTH CLINICAL RECORDS
+            </p>
+
+            <h1>
+                Patient Medical Records
+            </h1>
+
+            <p>
+                Complete medical history and prescriptions.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'records:create_medical_record' patient_id %}"
+            class="btn-primary"
+        >
+            + Add Medical Record
+        </a>
+
+    </div>
+
+
+    <!-- PATIENT REFERENCE -->
+
+    <div class="patient-record-banner">
+
+    <div class="patient-banner-icon">
+        👤
+    </div>
+
+    <div>
+
+        <span>
+            Patient
+        </span>
+
+        <strong>
+            {{ patient.user.get_full_name|default:patient.user.username }}
+        </strong>
+
+        <span>
+            OneHealth ID: {{ patient.onehealth_id }}
+        </span>
+
+    </div>
+
+</div>
+
+
+    <!-- MEDICAL RECORDS SECTION -->
+
+    <div class="records-section">
+
+        <div class="records-section-heading">
+
+            <div>
+
+                <p class="section-label">
+                    MEDICAL HISTORY
+                </p>
+
+                <h2>
+                    Records
+                </h2>
+
+            </div>
+
+
+            <span class="record-count">
+
+                {{ records|length }}
+
+                record{{ records|length|pluralize }}
+
+            </span>
+
+        </div>
+
+
+        {% if records %}
+
+            <div class="timeline">
+
+                {% for record in records %}
+
+                    <div class="timeline-item">
+
+                        <!-- TIMELINE ICON -->
+
+                        <div class="timeline-marker">
+                            🩺
+                        </div>
+
+
+                        <!-- MEDICAL RECORD -->
+
+                        <div class="medical-record-card">
+
+
+                            <!-- RECORD HEADER -->
+
+                            <div class="medical-record-header">
+
+                                <div>
+
+                                    <span class="record-date">
+                                        {{ record.record_date|date:"d M Y" }}
+                                    </span>
+
+                                    <h3>
+                                        {{ record.diagnosis }}
+                                    </h3>
+
+                                </div>
+
+
+                                {% if record.doctor %}
+
+                                    <div class="doctor-mini">
+
+                                        <span>
+                                            Doctor
+                                        </span>
+
+                                        <strong>
+                                            Dr.
+                                            {{ record.doctor.get_full_name|default:record.doctor.username }}
+                                        </strong>
+
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- SYMPTOMS -->
+
+                            {% if record.symptoms %}
+
+                                <div class="record-detail-block">
+
+                                    <h4>
+                                        Symptoms
+                                    </h4>
+
+                                    <p>
+                                        {{ record.symptoms|linebreaksbr }}
+                                    </p>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- DOCTOR NOTES -->
+
+                            {% if record.notes %}
+
+                                <div class="record-detail-block">
+
+                                    <h4>
+                                        Doctor's Notes
+                                    </h4>
+
+                                    <p>
+                                        {{ record.notes|linebreaksbr }}
+                                    </p>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- PRESCRIPTIONS -->
+
+                            <div class="prescription-section">
+
+                                <div class="prescription-heading">
+
+                                    <h4>
+                                        💊 Prescriptions
+                                    </h4>
+
+                                </div>
+
+
+                                {% with prescriptions=record.prescriptions.all %}
+
+                                    {% if prescriptions %}
+
+                                        <div class="prescription-list">
+
+                                            {% for prescription in prescriptions %}
+
+                                                <div class="prescription-card">
+
+                                                    <div class="medicine-icon">
+                                                        💊
+                                                    </div>
+
+
+                                                    <div class="medicine-info">
+
+                                                        <strong>
+                                                            {{ prescription.medicine_name }}
+                                                        </strong>
+
+
+                                                        <div class="medicine-meta">
+
+                                                            <span>
+                                                                <strong>
+                                                                    Dosage:
+                                                                </strong>
+
+                                                                {{ prescription.dosage }}
+                                                            </span>
+
+
+                                                            <span>
+                                                                <strong>
+                                                                    Frequency:
+                                                                </strong>
+
+                                                                {{ prescription.frequency }}
+                                                            </span>
+
+
+                                                            <span>
+                                                                <strong>
+                                                                    Duration:
+                                                                </strong>
+
+                                                                {{ prescription.duration }}
+                                                            </span>
+
+                                                        </div>
+
+
+                                                        {% if prescription.instructions %}
+
+                                                            <p>
+
+                                                                <strong>
+                                                                    Instructions:
+                                                                </strong>
+
+                                                                {{ prescription.instructions|linebreaksbr }}
+
+                                                            </p>
+
+                                                        {% endif %}
+
+                                                    </div>
+
+                                                </div>
+
+                                            {% endfor %}
+
+                                        </div>
+
+
+                                    {% else %}
+
+                                        <p class="empty-inline">
+                                            No prescription added for this record.
+                                        </p>
+
+                                    {% endif %}
+
+                                {% endwith %}
+
+
+                                <!-- ADD PRESCRIPTION -->
+
+                                <a
+                                    href="{% url 'records:add_prescription' record.id %}"
+                                    class="record-action-link"
+                                >
+                                    + Add Prescription
+                                </a>
+
+                            </div>
+
+
+                            <!-- RECORD FOOTER -->
+
+                            <div class="record-footer">
+
+                                {% if record.appointment %}
+
+                                    <span>
+                                        Appointment:
+                                        #{{ record.appointment.id }}
+                                    </span>
+
+                                {% endif %}
+
+                                <span>
+                                    Created:
+                                    {{ record.created_at|date:"d M Y, g:i A" }}
+                                </span>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+        {% else %}
+
+            <!-- EMPTY STATE -->
+
+            <div class="empty-state">
+
+                <div class="empty-state-icon">
+                    🩺
+                </div>
+
+                <h3>
+                    No medical records yet
+                </h3>
+
+                <p>
+                    No medical records have been created
+                    for this patient.
+                </p>
+
+
+                <a
+                    href="{% url 'records:create_medical_record' patient_id %}"
+                    class="btn-primary"
+                >
+                    + Create First Record
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

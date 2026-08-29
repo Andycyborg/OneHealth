@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block title %}
+Doctor Appointments | OneHealth
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <p class="dashboard-label">
+                DOCTOR PANEL
+            </p>
+
+            <h1>
+                Appointments
+            </h1>
+
+            <p class="doctor-specialization">
+                Manage your patient appointments.
+            </p>
+
+        </div>
+
+        <div class="doctor-id-card">
+
+            <span>
+                Doctor ID
+            </span>
+
+            <strong>
+                {{ doctor.doctor_id }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-section">
+
+        {% if appointments %}
+
+            <div class="appointment-list">
+
+                {% for appointment in appointments %}
+
+                    <div class="appointment-card">
+
+                        <div class="appointment-date">
+
+                            <strong>
+                                {{ appointment.appointment_date|date:"d" }}
+                            </strong>
+
+                            <span>
+                                {{ appointment.appointment_date|date:"M" }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="appointment-info">
+
+                            <h3>
+                                {{ appointment.citizen.get_full_name }}
+                            </h3>
+
+                            <p>
+                                {{ appointment.hospital.name }}
+                            </p>
+
+                            <span>
+                                {{ appointment.appointment_time|time:"g:i A" }}
+                            </span>
+
+                            <br>
+
+                            <span>
+                                Status:
+                                <strong>
+                                    {{ appointment.status }}
+                                </strong>
+                            </span>
+
+                            {% if appointment.reason %}
+
+                                <p style="margin-top:8px;">
+                                    <strong>
+                                        Reason:
+                                    </strong>
+
+                                    {{ appointment.reason }}
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div style="min-width:220px;">
+
+                            {% if appointment.status == "Pending" %}
+
+                                <form
+                                    method="POST"
+                                    action="{% url 'appointments:update' appointment.id %}"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <textarea
+                                        name="doctor_note"
+                                        rows="2"
+                                        placeholder="Add doctor note..."
+                                        style="width:100%; margin-bottom:8px;"
+                                    ></textarea>
+
+                                    <button
+                                        type="submit"
+                                        name="status"
+                                        value="Accepted"
+                                        class="primary-btn"
+                                    >
+                                        Accept
+                                    </button>
+
+                                    <button
+                                        type="submit"
+                                        name="status"
+                                        value="Rejected"
+                                        class="btn-danger"
+                                    >
+                                        Reject
+                                    </button>
+
+                                </form>
+
+
+                            {% elif appointment.status == "Accepted" %}
+
+                                <form
+                                    method="POST"
+                                    action="{% url 'appointments:update' appointment.id %}"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <textarea
+                                        name="doctor_note"
+                                        rows="2"
+                                        placeholder="Add/update doctor note..."
+                                        style="width:100%; margin-bottom:8px;"
+                                    >{{ appointment.doctor_note }}</textarea>
+
+                                    <button
+                                        type="submit"
+                                        name="status"
+                                        value="Completed"
+                                        class="primary-btn"
+                                    >
+                                        Mark Completed
+                                    </button>
+
+                                </form>
+
+
+                            {% else %}
+
+                                {% if appointment.doctor_note %}
+
+                                    <p>
+                                        <strong>
+                                            Doctor Note
+                                        </strong>
+                                    </p>
+
+                                    <p style="color:#667085;">
+                                        {{ appointment.doctor_note }}
+                                    </p>
+
+                                {% endif %}
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <h3>
+                    No appointments
+                </h3>
+
+                <p>
+                    Patient appointments will appear here.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}
+Book Appointment | OneHealth
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <div class="dashboard-section">
+
+        <p class="section-label">
+            APPOINTMENT
+        </p>
+
+        <h1>
+            Book Appointment
+        </h1>
+
+        <p style="color:#667085; margin-top:8px;">
+            Book an appointment with your selected doctor.
+        </p>
+
+    </div>
+
+
+    <div class="dashboard-section">
+
+        <div class="hospital-card">
+
+            <div class="hospital-icon">
+                🏥
+            </div>
+
+            <div>
+
+                <h3>
+                    {{ hospital.name }}
+                </h3>
+
+                <p>
+                    {{ hospital.city }},
+                    {{ hospital.state }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div style="margin-top:20px;">
+
+            <h2>
+                Dr. {{ doctor.user.get_full_name }}
+            </h2>
+
+            <p style="color:#667085; margin-top:6px;">
+                {{ doctor.specialization }}
+            </p>
+
+            <p style="color:#667085; margin-top:4px;">
+                {{ doctor.qualification }}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-section">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+
+                <div class="form-error">
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+
+            <div style="margin-bottom:20px;">
+
+                <label>
+                    Appointment Date
+                </label>
+
+                {{ form.appointment_date }}
+
+                {% for error in form.appointment_date.errors %}
+
+                    <p class="form-error">
+                        {{ error }}
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+
+            <div style="margin-bottom:20px;">
+
+                <label>
+                    Appointment Time
+                </label>
+
+                {{ form.appointment_time }}
+
+                {% for error in form.appointment_time.errors %}
+
+                    <p class="form-error">
+                        {{ error }}
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+
+            <div style="margin-bottom:20px;">
+
+                <label>
+                    Reason for Visit
+                </label>
+
+                {{ form.reason }}
+
+                {% for error in form.reason.errors %}
+
+                    <p class="form-error">
+                        {{ error }}
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                Confirm Appointment
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

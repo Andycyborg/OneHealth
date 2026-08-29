@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}
+OneHealth | Unified Healthcare
+{% endblock %}
+
+
+{% block content %}
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <p class="eyebrow">
+            DIGITAL HEALTH PLATFORM
+        </p>
+
+        <h1>
+            One Citizen.
+            <br>
+            One Health ID.
+            <br>
+            One Lifetime Record.
+        </h1>
+
+        <p>
+            OneHealth connects citizens, doctors and
+            healthcare services through a unified
+            digital health platform.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a
+                href="{% url 'accounts:register' %}"
+                class="btn-primary"
+            >
+                Get Started
+            </a>
+
+            <a
+                href="{% url 'accounts:login' %}"
+                class="btn-secondary"
+            >
+                Login
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

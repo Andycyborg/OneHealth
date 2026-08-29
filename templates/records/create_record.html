@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create Medical Record | OneHealth
+{% endblock %}
+
+{% block content %}
+
+<div class="records-page">
+
+    <div class="records-page-header">
+
+        <div>
+            <p class="eyebrow">ONEHEALTH RECORDS</p>
+
+            <h1>Create Medical Record</h1>
+
+            <p>
+                Add a new medical record for the patient.
+            </p>
+        </div>
+
+        <a
+            href="{% url 'records:doctor_patient_records' patient_id %}"
+            class="btn-secondary"
+        >
+            ← Back to Records
+        </a>
+
+    </div>
+
+
+    <div class="record-form-card">
+
+        <div class="form-card-header">
+
+            <div class="record-icon">
+                🩺
+            </div>
+
+            <div>
+                <h2>Medical Visit Details</h2>
+
+                <p>
+                    Enter the diagnosis, symptoms and doctor's notes.
+                </p>
+            </div>
+
+        </div>
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            {% if form.non_field_errors %}
+
+                <div class="form-error-box">
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+
+            <div class="record-form-grid">
+
+                <div class="record-form-group full-width">
+
+                    <label for="{{ form.diagnosis.id_for_label }}">
+                        Diagnosis
+                    </label>
+
+                    {{ form.diagnosis }}
+
+                    {% if form.diagnosis.errors %}
+                        <div class="field-error">
+                            {{ form.diagnosis.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <div class="record-form-group full-width">
+
+                    <label for="{{ form.symptoms.id_for_label }}">
+                        Symptoms
+                    </label>
+
+                    {{ form.symptoms }}
+
+                    {% if form.symptoms.errors %}
+                        <div class="field-error">
+                            {{ form.symptoms.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <div class="record-form-group full-width">
+
+                    <label for="{{ form.notes.id_for_label }}">
+                        Doctor's Notes
+                    </label>
+
+                    {{ form.notes }}
+
+                    {% if form.notes.errors %}
+                        <div class="field-error">
+                            {{ form.notes.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <a
+                    href="{% url 'records:doctor_patient_records' patient_id %}"
+                    class="btn-secondary"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                >
+                    Save Medical Record
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

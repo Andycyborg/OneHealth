@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Appointments | OneHealth
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <p class="dashboard-label">
+                ONEHEALTH
+            </p>
+
+            <h1>
+                My Appointments
+            </h1>
+
+            <p class="doctor-specialization">
+                Track your upcoming and previous appointments.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'hospitals:list' %}"
+            class="btn-secondary"
+        >
+            Find Hospital
+        </a>
+
+    </div>
+
+
+    <div class="dashboard-section">
+
+        {% if appointments %}
+
+            <div class="appointment-list">
+
+                {% for appointment in appointments %}
+
+                    <div class="appointment-card">
+
+                        <div class="appointment-date">
+
+                            <strong>
+                                {{ appointment.appointment_date|date:"d" }}
+                            </strong>
+
+                            <span>
+                                {{ appointment.appointment_date|date:"M" }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="appointment-info">
+
+                            <h3>
+                                Dr.
+                                {{ appointment.doctor.get_full_name }}
+                            </h3>
+
+                            <p>
+                                {{ appointment.hospital.name }}
+                            </p>
+
+                            <span>
+                                {{ appointment.appointment_time|time:"g:i A" }}
+                            </span>
+
+                            <br>
+
+                            <span>
+                                Status:
+                                <strong>
+                                    {{ appointment.status }}
+                                </strong>
+                            </span>
+
+                            {% if appointment.reason %}
+
+                                <p style="margin-top:8px;">
+                                    Reason:
+                                    {{ appointment.reason }}
+                                </p>
+
+                            {% endif %}
+
+                            {% if appointment.doctor_note %}
+
+                                <p style="margin-top:8px;">
+                                    Doctor note:
+                                    {{ appointment.doctor_note }}
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="appointment-action">
+
+                            {% if appointment.status == "Pending" %}
+
+                                <form
+                                    method="POST"
+                                    action="{% url 'appointments:cancel' appointment.id %}"
+                                >
+
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="btn-danger"
+                                    >
+                                        Cancel
+                                    </button>
+
+                                </form>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <h3>
+                    No appointments yet
+                </h3>
+
+                <p>
+                    Find a hospital and book your first appointment.
+                </p>
+
+                <br>
+
+                <a
+                    href="{% url 'hospitals:list' %}"
+                    class="primary-btn"
+                >
+                    Find Hospital
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

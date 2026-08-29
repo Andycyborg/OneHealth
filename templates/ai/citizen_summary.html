@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}
+AI Health Summary | OneHealth
+{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+    <div class="ai-result-card">
+
+        <p class="eyebrow">
+            ONEHEALTH AI
+        </p>
+
+        <h1>
+            Your AI Health Summary
+        </h1>
+
+        <p class="ai-subtitle">
+            A simple summary of your existing medical records.
+        </p>
+
+        <div class="ai-summary">
+
+            {{ summary|linebreaks }}
+
+        </div>
+
+        <div class="ai-warning">
+
+            <strong>Important:</strong>
+            This is an AI-generated informational summary.
+            It is not a medical diagnosis and does not replace
+            professional medical advice.
+
+        </div>
+
+        <br>
+
+        <a
+            href="{% url 'accounts:dashboard_redirect' %}"
+            class="btn-secondary"
+        >
+            Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

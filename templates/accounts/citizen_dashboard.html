@@ -1,0 +1,339 @@
+{% extends "base.html" %}
+
+{% block title %}
+Citizen Dashboard | OneHealth
+{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <p class="eyebrow">
+                ONEHEALTH CITIZEN
+            </p>
+
+            <h1>
+                Welcome,
+                {{ request.user.first_name }}
+            </h1>
+
+            <p>
+                OneHealth ID:
+                <strong>{{ profile.onehealth_id }}</strong>
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'hospitals:list' %}"
+            class="btn-primary"
+        >
+            Find Hospital
+        </a>
+
+    </div>
+
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <span>Medical Records</span>
+            <strong>{{ record_count }}</strong>
+        </div>
+
+        <div class="stat-card">
+            <span>Appointments</span>
+            <strong>{{ appointment_count }}</strong>
+        </div>
+
+        <div class="stat-card">
+            <span>Blood Group</span>
+            <strong>{{ profile.blood_group }}</strong>
+        </div>
+
+        <div class="stat-card">
+            <span>Gender</span>
+            <strong>{{ profile.gender|default:"-" }}</strong>
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-grid">
+
+        <section class="dashboard-card">
+
+            <div class="card-heading">
+
+                <h2>
+                    Upcoming Appointments
+                </h2>
+
+                <a
+                    href="{% url 'appointments:citizen_appointments' %}"
+                >
+                    View all
+                </a>
+
+            </div>
+
+            {% if upcoming %}
+
+                {% for appointment in upcoming %}
+
+                    <div class="mini-item">
+
+                        <strong>
+                            Dr.
+                            {{ appointment.doctor.get_full_name }}
+                        </strong>
+
+                        <span>
+                            {{ appointment.appointment_date }}
+                            ·
+                            {{ appointment.appointment_time }}
+                        </span>
+
+                        <small>
+                            {{ appointment.hospital.name }}
+                        </small>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>
+                    No upcoming appointments.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+
+        <section class="dashboard-card">
+
+            <div class="card-heading">
+
+                <h2>
+                    Recent Medical Records
+                </h2>
+
+                <a
+                    href="{% url 'records:citizen_records' %}"
+                >
+                    View all
+                </a>
+
+            </div>
+
+            {% if recent_records %}
+
+                {% for record in recent_records %}
+
+                    <div class="mini-item">
+
+                        <strong>
+                            {{ record.diagnosis }}
+                        </strong>
+
+                        <span>
+                            {{ record.record_date }}
+                        </span>
+
+                        {% if record.doctor %}
+
+                            <small>
+                                Dr.
+                                {{ record.doctor.get_full_name }}
+                            </small>
+
+                        {% endif %}
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>
+                    No medical records yet.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+    </div>
+
+
+    <!-- AI HEALTH SUMMARY CARD -->
+
+<div
+    style="
+        margin-top: 28px;
+        padding: 28px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+    "
+>
+
+    <div>
+
+        <p
+            style="
+                margin: 0 0 8px;
+                font-size: 12px;
+                font-weight: 700;
+                letter-spacing: 1.2px;
+                text-transform: uppercase;
+                color: #2563eb;
+            "
+        >
+            AI HEALTH ASSISTANT
+        </p>
+
+        <h2
+            style="
+                margin: 0 0 8px;
+                font-size: 24px;
+                font-weight: 700;
+                color: #111827;
+            "
+        >
+            Understand your health records
+        </h2>
+
+        <p
+            style="
+                margin: 0;
+                color: #6b7280;
+                font-size: 15px;
+                line-height: 1.6;
+            "
+        >
+            Get an AI-generated summary of your
+            recent medical records.
+        </p>
+
+    </div>
+
+
+    <a
+        href="{% url 'ai:citizen_summary' %}"
+        style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 180px;
+            padding: 12px 20px;
+            background: #2563eb;
+            color: #ffffff;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+        "
+    >
+        Generate AI Summary
+    </a>
+
+</div>
+
+
+<!-- ONEHEALTH AI CHATBOT CARD -->
+
+<div
+    style="
+        margin-top: 20px;
+        padding: 28px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+    "
+>
+
+    <div>
+
+        <p
+            style="
+                margin: 0 0 8px;
+                font-size: 12px;
+                font-weight: 700;
+                letter-spacing: 1.2px;
+                text-transform: uppercase;
+                color: #111827;
+            "
+        >
+            ONEHEALTH AI
+        </p>
+
+        <h2
+            style="
+                margin: 0 0 8px;
+                font-size: 24px;
+                font-weight: 700;
+                color: #111827;
+            "
+        >
+            Chat with OneHealth AI
+        </h2>
+
+        <p
+            style="
+                margin: 0;
+                color: #6b7280;
+                font-size: 15px;
+                line-height: 1.6;
+            "
+        >
+            Ask questions about your medical records
+            or the OneHealth platform.
+        </p>
+
+    </div>
+
+
+    <a
+        href="{% url 'ai:chatbot' %}"
+        style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 180px;
+            padding: 12px 20px;
+            background: #111827;
+            color: #ffffff;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+        "
+    >
+        Open AI Chatbot
+    </a>
+
+</div>
+
+</div>
+
+{% endblock %}

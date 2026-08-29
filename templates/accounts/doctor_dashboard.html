@@ -1,0 +1,415 @@
+{% extends "base.html" %}
+
+{% block title %}
+Doctor Dashboard | OneHealth
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- HEADER -->
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <p class="dashboard-label">
+                ONEHEALTH DOCTOR
+            </p>
+
+            <h1>
+                Welcome,
+                Dr.
+                {{ request.user.get_full_name|default:request.user.username }}
+            </h1>
+
+            <p class="doctor-specialization">
+                {{ profile.specialization }}
+            </p>
+
+        </div>
+
+
+        <div class="doctor-id-card">
+
+            <span>
+                Doctor ID
+            </span>
+
+            <strong>
+                {{ profile.doctor_id }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <span class="stat-title">
+                Total Appointments
+            </span>
+
+            <strong>
+                {{ appointments_count }}
+            </strong>
+
+            <small>
+                Patient bookings
+            </small>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span class="stat-title">
+                Pending
+            </span>
+
+            <strong>
+                {{ pending_count }}
+            </strong>
+
+            <small>
+                Need your action
+            </small>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span class="stat-title">
+                Accepted
+            </span>
+
+            <strong>
+                {{ accepted_count }}
+            </strong>
+
+            <small>
+                Confirmed appointments
+            </small>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span class="stat-title">
+                Completed
+            </span>
+
+            <strong>
+                {{ completed_count }}
+            </strong>
+
+            <small>
+                Completed visits
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <!-- HOSPITALS -->
+
+    <div class="dashboard-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <p class="section-label">
+                    WORKPLACE
+                </p>
+
+                <h2>
+                    My Hospitals
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        {% if hospitals %}
+
+            <div class="hospital-grid">
+
+                {% for hospital in hospitals %}
+
+                    <div class="hospital-card">
+
+                        <div class="hospital-icon">
+                            🏥
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                {{ hospital.name }}
+                            </h3>
+
+                            <p>
+                                {{ hospital.city }},
+                                {{ hospital.state }}
+                            </p>
+
+                            {% if hospital.emergency_available %}
+
+                                <span class="status-badge emergency">
+                                    Emergency Available
+                                </span>
+
+                            {% else %}
+
+                                <span class="status-badge">
+                                    Hospital
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <h3>
+                    No hospital assigned
+                </h3>
+
+                <p>
+                    You are currently not assigned to any hospital.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- UPCOMING APPOINTMENTS -->
+
+    <div class="dashboard-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <p class="section-label">
+                    SCHEDULE
+                </p>
+
+                <h2>
+                    Recent Appointments
+                </h2>
+
+            </div>
+
+            <a
+                href="{% url 'appointments:doctor_appointments' %}"
+                class="text-link"
+            >
+                View all
+            </a>
+
+        </div>
+
+
+        {% if appointments %}
+
+            <div class="appointment-list">
+
+                {% for appointment in appointments|slice:":5" %}
+
+                    <div class="appointment-card">
+
+                        <div class="appointment-date">
+
+                            <strong>
+                                {{ appointment.appointment_date|date:"d" }}
+                            </strong>
+
+                            <span>
+                                {{ appointment.appointment_date|date:"M" }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="appointment-info">
+
+                            <h3>
+                                {{ appointment.citizen.get_full_name }}
+                            </h3>
+
+                            <p>
+                                {{ appointment.hospital.name }}
+                            </p>
+
+                            <span>
+                                {{ appointment.appointment_time|time:"g:i A" }}
+                            </span>
+
+                            <br>
+
+                            <span>
+                                Status:
+                                <strong>
+                                    {{ appointment.status }}
+                                </strong>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <h3>
+                    No appointments yet
+                </h3>
+
+                <p>
+                    Patient appointments will appear here.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- DOCTOR TOOLS -->
+
+    <div class="dashboard-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <p class="section-label">
+                    TOOLS
+                </p>
+
+                <h2>
+                    Doctor Tools
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="action-grid">
+
+            <a
+                href="{% url 'appointments:doctor_appointments' %}"
+                class="action-card"
+            >
+
+                <span class="action-icon">
+                    📅
+                </span>
+
+                <strong>
+                    Appointments
+                </strong>
+
+                <small>
+                    Manage patient appointments
+                </small>
+
+            </a>
+
+
+            <a
+                href="{% url 'records:search_patient_records' %}"
+                class="action-card"
+            >
+
+                <span class="action-icon">
+                    🩺
+                </span>
+
+                <strong>
+                    Patient Records
+                </strong>
+
+                <small>
+                    Search and view patient health records
+                </small>
+
+            </a>
+
+
+            <a
+                href="#"
+                class="action-card"
+            >
+
+                <span class="action-icon">
+                    💊
+                </span>
+
+                <strong>
+                    Prescriptions
+                </strong>
+
+                <small>
+                    Coming in the next module
+                </small>
+
+            </a>
+
+
+            <a
+                href="{% url 'ai:chatbot' %}"
+                class="action-card"
+            >
+
+                <span class="action-icon">
+                    🤖
+                </span>
+
+                <strong>
+                    AI Assistant
+                </strong>
+
+                <small>
+                    AI features will be added later
+                </small>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

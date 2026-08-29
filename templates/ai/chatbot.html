@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}
+OneHealth AI Assistant
+{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+    <div class="chat-card">
+
+        <!-- HEADER -->
+
+        <div class="chat-header">
+
+            <p class="eyebrow">
+                ONEHEALTH AI
+            </p>
+
+            <h1>
+                Health Assistant
+            </h1>
+
+            <p>
+                Ask about your OneHealth records
+                or the platform.
+            </p>
+
+        </div>
+
+
+        <!-- AI RESPONSE -->
+
+        {% if answer %}
+
+            <div class="chat-answer">
+
+                <div class="ai-answer-header">
+
+                    <div class="ai-avatar">
+                        AI
+                    </div>
+
+                    <div>
+                        <strong>
+                            OneHealth AI
+                        </strong>
+
+                        <span>
+                            Health Assistant
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="ai-answer-content">
+                    {{ answer|linebreaksbr }}
+                </div>
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- QUESTION FORM -->
+
+        <form method="POST" class="chat-form">
+
+            {% csrf_token %}
+
+            <label for="question">
+                Ask OneHealth AI
+            </label>
+
+            <textarea
+                id="question"
+                name="question"
+                rows="4"
+                placeholder="Ask something about your records or OneHealth..."
+                required
+            ></textarea>
+
+            <div class="chat-form-footer">
+
+                <span>
+                    Ask a clear question for a better answer.
+                </span>
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                >
+                    Ask AI
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <!-- DISCLAIMER -->
+
+        <div class="chat-disclaimer">
+
+            <span class="disclaimer-icon">
+                ⓘ
+            </span>
+
+            <span>
+                AI does not diagnose diseases or replace
+                professional medical advice.
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

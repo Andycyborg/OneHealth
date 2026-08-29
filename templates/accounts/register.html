@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}
+Register | OneHealth
+{% endblock %}
+
+
+{% block content %}
+
+<div class="auth-container">
+
+    <div class="auth-card">
+
+        <h1>Create OneHealth Account</h1>
+
+        <p class="auth-subtitle">
+            Join the OneHealth digital healthcare platform.
+        </p>
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            <div class="form-group">
+
+                <label>Account Type</label>
+
+                <select
+                    name="role"
+                    id="role"
+                    onchange="changeRole()"
+                    required
+                >
+
+                    <option value="">
+                        Select Account Type
+                    </option>
+
+                    <option value="citizen">
+                        Citizen
+                    </option>
+
+                    <option value="doctor">
+                        Doctor
+                    </option>
+
+                    <option value="government">
+                        Government
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div id="form-fields">
+
+                {% for field in form %}
+
+                    <div class="form-group">
+
+                        {{ field.label_tag }}
+
+                        {{ field }}
+
+                        {% if field.errors %}
+
+                            <div class="error">
+                                {{ field.errors }}
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="btn-primary"
+            >
+                Create Account
+            </button>
+
+        </form>
+
+
+        <p class="auth-footer">
+
+            Already have an account?
+
+            <a href="{% url 'accounts:login' %}">
+                Login
+            </a>
+
+        </p>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function changeRole() {
+
+    const role =
+        document.getElementById("role").value;
+
+    /*
+        The server selects the correct Django form.
+        This dropdown is mainly for selecting the
+        registration role.
+    */
+
+}
+
+</script>
+
+{% endblock %}

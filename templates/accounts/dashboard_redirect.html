@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="dashboard-placeholder">
+
+    <h1>OneHealth Dashboard</h1>
+
+    <p>
+        Your account has been created successfully.
+    </p>
+
+    <p>
+        Dashboard implementation is coming in the next stage.
+    </p>
+
+    <a
+        href="{% url 'accounts:logout' %}"
+        class="btn-primary"
+    >
+        Logout
+    </a>
+
+</div>
+
+{% endblock %}
